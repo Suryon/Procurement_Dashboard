@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Procurement Dashboard</title>
+    <script>
+        async function loadDashboard() {
+          const res = await fetch('/api/dashboard');
+          const data = await res.json();
+
+          document.getElementById('totalSpend').textContent = data.totalSpend;
+          document.getElementById('totalOrders').textContent = data.totalOrders;
+          document.getElementById('aiInsights').textContent = data.aiInsights;
+
+          const categoryList = document.getElementById('categorySpend');
+          for (const [category, amount] of Object.entries(data.categorySpend)) {
+            const item = document.createElement('li');
+            item.textContent = `${category}: ₹${amount}`;
+            categoryList.appendChild(item);
+          }
+        }
+
+        window.onload = loadDashboard;
+    </script>
+</head>
+<body>
+<h1>Procurement Analytics Dashboard</h1>
+<p>Total Spend: ₹<span id="totalSpend">...</span></p>
+<p>Total Orders: <span id="totalOrders">...</span></p>
+
+<h3>Spend by Category:</h3>
+<ul id="categorySpend"></ul>
+
+<h3>AI Insights:</h3>
+<p id="aiInsights">Loading...</p>
+</body>
+</html>
